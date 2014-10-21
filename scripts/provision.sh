@@ -183,6 +183,11 @@ debconf-set-selections <<< "mysql-server mysql-server/root_password password sec
 debconf-set-selections <<< "mysql-server mysql-server/root_password_again password secret"
 apt-get install -y mysql-server
 
+# Replace deprecated key_buffer in my.cnf
+
+sed -i '/^key_buffer[[:space:]]/s/key_buffer/key_buffer_size/' /etc/mysql/my.cnf
+service mysql restart
+
 # Configure MySQL Remote Access
 
 sed -i '/^bind-address/s/bind-address.*=.*/bind-address = 10.0.2.15/' /etc/mysql/my.cnf
