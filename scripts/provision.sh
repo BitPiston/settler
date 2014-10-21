@@ -27,6 +27,11 @@ apt-add-repository ppa:ondrej/php5-5.6 -y
 wget -O - http://dl.hhvm.com/conf/hhvm.gpg.key | apt-key add -
 echo deb http://dl.hhvm.com/ubuntu trusty main | tee /etc/apt/sources.list.d/hhvm.list
 
+## MariaDB
+
+apt-key adv --recv-keys --keyserver hkp://keyserver.ubuntu.com:80 0xcbcb082a1bb943db
+add-apt-repository 'deb http://mirrors.digitalocean.com/mariadb/repo/10.1/ubuntu trusty main'
+
 # Update Package Lists
 
 apt-get update
@@ -181,18 +186,18 @@ npm install -g bower
 
 apt-get install -y sqlite3 libsqlite3-dev
 
-# Install MySQL
+# Install MariaDB
 
-debconf-set-selections <<< "mysql-server mysql-server/root_password password secret"
-debconf-set-selections <<< "mysql-server mysql-server/root_password_again password secret"
-apt-get install -y mysql-server
+debconf-set-selections <<< "mariadb-server mysql-server/root_password password secret"
+debconf-set-selections <<< "mariadb-server mysql-server/root_password_again password secret"
+apt-get install -y mariadb-server
 
 # Replace deprecated key_buffer in my.cnf
 
 sed -i '/^key_buffer[[:space:]]/s/key_buffer/key_buffer_size/' /etc/mysql/my.cnf
 service mysql restart
 
-# Configure MySQL Remote Access
+# Configure MariaDB Remote Access
 
 sed -i '/^bind-address/s/bind-address.*=.*/bind-address = 10.0.2.15/' /etc/mysql/my.cnf
 mysql --user="root" --password="secret" -e "GRANT ALL ON *.* TO root@'10.0.2.2' IDENTIFIED BY 'secret' WITH GRANT OPTION;"
