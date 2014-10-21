@@ -20,6 +20,13 @@ apt-add-repository ppa:rwky/redis -y
 apt-add-repository ppa:chris-lea/node.js -y
 apt-add-repository ppa:ondrej/php5-5.6 -y
 
+# Add Repositories and Keys
+
+## HHVM
+
+wget -O - http://dl.hhvm.com/conf/hhvm.gpg.key | apt-key add -
+echo deb http://dl.hhvm.com/ubuntu trusty main | tee /etc/apt/sources.list.d/hhvm.list
+
 # Update Package Lists
 
 apt-get update
@@ -89,11 +96,8 @@ rm /etc/nginx/sites-enabled/default
 rm /etc/nginx/sites-available/default
 service nginx restart
 
-# Add The HHVM Key & Repository
+# Install HHVM
 
-wget -O - http://dl.hhvm.com/conf/hhvm.gpg.key | apt-key add -
-echo deb http://dl.hhvm.com/ubuntu trusty main | tee /etc/apt/sources.list.d/hhvm.list
-apt-get update
 apt-get install -y hhvm
 
 # Configure HHVM To Run As Homestead
